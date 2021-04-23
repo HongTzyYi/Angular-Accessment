@@ -15,7 +15,9 @@ export class EventsListComponent implements OnInit{
     constructor(private eventService: ScheduleService, private route: ActivatedRoute){}
 
     ngOnInit(){
-        this.eventService.getEventList().subscribe({next: events => this.events = events} )
-        console.log(this.events);
+        this.eventService.getEventList().subscribe(events => {
+            console.log(events);
+            this.events = events;
+        });
     }
 }

@@ -30,7 +30,7 @@ export class ScheduleService {
     return typeof value === 'string' ?  enumType[value] : value;
   } */
 
-  getEventList(): Observable<IEventModel[]> {
+  public getEventList(): Observable<IEventModel[]> {
     /* return EventList; */
     return this.httpClient.get<IEventModel[]>('/api/v1/store/schedule/events', {responseType: 'json'}).pipe(
       map(data => data.map(
