@@ -1,7 +1,13 @@
 <div class="well hoverwell thumbnail">
+<<<<<<< HEAD
     <h1>Name: {{event['name:text']}}</h1>
     <div>Channel: {{event['source']!['channel:text']}}</div>
     <div>Status: {{event['status:enum']}}</div>
+=======
+    <h1>Name: {{event?.name}}</h1>
+    <div>Channel: {{event?.source?.channel}}</div>
+    <!-- <div>{{event?.status}}</div> -->
+>>>>>>> 884cbb9def3961a2fee380b3f8f2e63b31dcd1a1
     <div class="btn-group">
         <a class="btn btn-start" (click)="startRecord()"><i class="glyphicon glyphicon-play-circle"></i></a>
         <a class="btn btn-edit" (click)="editRecord()"><i class="glyphicon glyphicon-cog"></i></a>
