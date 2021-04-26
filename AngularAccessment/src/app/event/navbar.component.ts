@@ -9,6 +9,12 @@ import { Component } from '@angular/core';
                 </div>
 
                 <form id="addEvent"  class="navbar-form navbar-right"  >
+                <div class="form-group">
+                    <input [(ngModel)]="token" name="token" type="text" class="form-control" placeholder="Input token" >
+                    <button class="btn btn-default" (click)="inputToken(token)">
+                        Input Token
+                    </button>
+                </div>
                 <button class="btn btn-default" >
                     Add New Event
                 </button>
@@ -21,5 +27,11 @@ import { Component } from '@angular/core';
 })
 
 export class NavBarComponent{
+    token: string = '';
+
     addEvent(){}
+
+    inputToken(token: string) {
+        sessionStorage.setItem('token', token);
+    }
 }
