@@ -13,7 +13,7 @@ export class TokenInterceptor implements HttpInterceptor {
   // constructor(public auth: AuthService) {}
   intercept(request: HttpRequest<any > , next: HttpHandler): Observable<HttpEvent < any >> {
 
-    let token = sessionStorage.getItem('token');
+    let token = this.getToken();
     request = request.clone({
       setHeaders: {
         // Authorization: `Bearer ${this.auth.getToken()}`
@@ -23,7 +23,7 @@ export class TokenInterceptor implements HttpInterceptor {
     return next.handle(request);
   }
 
-  setToken(token: string){}
-
-  getToken(){}
+  getToken() {
+    return sessionStorage.getItem('token');
+  }
 }

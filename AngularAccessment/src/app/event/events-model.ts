@@ -17,40 +17,27 @@ export enum EventType {
     Reserved = 'Reserved'
 }
 
-export enum EventHealth {
-    Unknown = 'Unknown',
-    Good = 'Good',
-    Alert = 'Alert',
-    Fatal = 'Fatal'
-}
-
-export enum EventHealthCondition {
-    None = 'None',
-    RECORD_DURATION_TRUNCATED = 'RECORD_DURATION_TRUNCATED',
-    BNCS_UNKNOWN = 'BNCS_UNKNOWN',
-    BNCS_HTTP400 = 'BNCS_HTTP400',
-    BNCS_HTTP404 = 'BNCS_HTTP404'
-}
-
-export enum EventErrorReason {
-    ERR_ATTRITBUTE_NOT_FOUND = 'ERR_ATTRITBUTE_NOT_FOUND',
-    ERR_ATTRIBUTE_DENIED = 'ERR_ATTRIBUTE_DENIED',
-    ERR_EVENT_CONFLICT = 'ERR_EVENT_CONFLICT',
-    ERR_HEALTH = 'ERR_HEALTH'
-}
-
 export interface IEventModel {
-    'event:id'?: string;
+    event?: string;
+    name?: string;
+    start?: Date;
+    end?: Date;
+    source?: { channel: string, recordId?: string };
+    channel?: string;
+    status?: EventStatus;
+    type?: EventType;
+    folder?: string;
+}
+
+export interface IAddEvent {
     'name:text'?: string;
-    'referenceId:text'?: string;
-    'start:dateTime'?: Date;
-    'end:dateTime'?: Date;
-    'source'?: { 'channel:text': string, 'recordId:text'?: string };
-    'asset:id'?: string;
-    'isCrash:bool'?: boolean;
-    'status:enum'?: EventStatus;
-    'health:enum'?: EventHealth;
-    'healthCondition:enum' ?: EventHealthCondition[];
-    'type:enum'?: EventType;
     'folder:id'?: string;
+    'start:dateTime'?: string;
+    'end:dateTime'?: string;
+    'isCrash:bool'?: boolean;
+    'source'?: {
+      'channel:text'?: string;
+    };
+    'customMetadata'?: {};
+    'type:enum'?: EventType;
 }

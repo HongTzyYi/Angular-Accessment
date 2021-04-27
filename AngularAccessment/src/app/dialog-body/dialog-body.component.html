@@ -1,0 +1,36 @@
+<h1 mat-dialog-title>{{title}}</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+        <p>Event Name</p>
+        <mat-label>Event Name</mat-label>
+        <input matInput [(ngModel)]="eventModel.name">
+  </mat-form-field>
+  <br/>
+  <mat-form-field>
+        <p>Start Time</p>
+        <mat-label>Start Time</mat-label>
+        <input matInput [(ngModel)]="eventModel.start">
+  </mat-form-field>
+  <br/>
+  <mat-form-field>
+        <p>End Time</p>
+        <mat-label>End Time</mat-label>
+        <input matInput [(ngModel)]="eventModel.end">
+  </mat-form-field>
+  <br/>
+  <mat-form-field>
+        <p>Clip Location</p>
+        <mat-label>Clip Location</mat-label>
+        <input matInput [(ngModel)]="eventModel.folder">
+  </mat-form-field>
+  <br/>
+  <mat-form-field>
+        <p>Recording Channel</p>
+        <mat-label>Recording Channel</mat-label>
+        <input matInput [(ngModel)]="eventModel.channel">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="close()">Cancel</button>
+  <button mat-button [mat-dialog-close]="eventModel" cdkFocusInitial>Ok</button>
+</div>
