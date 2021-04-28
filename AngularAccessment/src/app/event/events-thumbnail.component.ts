@@ -17,7 +17,7 @@ import { map } from 'rxjs/operators';
 
 export class EventsThumbnailComponent {
     @Input() event: IEventModel;
-    editEvent = <IEditEvent>{};
+    
 
     constructor(private scheduleService: ScheduleService, private matDialog: MatDialog) {}
 
@@ -30,6 +30,7 @@ export class EventsThumbnailComponent {
     }
 
     openDialog() {
+        let editEvent = <IEditEvent>{};
         const dialogConfig = new MatDialogConfig();
         dialogConfig.width = `500px`;
         dialogConfig.data = {eventModel: this.event, title: 'Edit Event', type: 'EDIT'};
@@ -37,13 +38,15 @@ export class EventsThumbnailComponent {
 
         dialogRef.afterClosed().pipe(
             map(result => {
-                console.log(result);
-                this.editEvent['start:dateTime'] =  new Date(result.start).toISOString();
-                this.editEvent['end:dateTime'] = new Date(result.end).toISOString(); })
-        )
-        .subscribe(result => {
-            if (this.editEvent) {
-                this.scheduleService.editEvent(this.event.event || '', this.editEvent)
+                if (result) {
+                    editEvent['start:dateTime'] =  new Date(result.start).toISOString();
+                    editEvent['end:dateTime'] = new Date(result.end).toISOString();
+                }
+            })
+        ).subscribe(result => {
+            console.log(editEvent);
+            if (editEvent['start:dateTime'] && editEvent['end:dateTime']) {
+                this.scheduleService.editEvent(this.event.event || '', editEvent)
                 .subscribe();
             }
         });
