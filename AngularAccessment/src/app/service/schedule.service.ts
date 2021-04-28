@@ -1,7 +1,7 @@
 // Service containing API wrapper from scs schedule API
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { IEventModel, EventStatus, EventType, IAddEvent } from '../event/events-model';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { IEventModel, EventStatus, EventType, IAddEvent, IEditEvent } from '../event/events-model';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { EventsListComponent } from '../event/events-index';
@@ -52,7 +52,7 @@ export class ScheduleService {
   }
 
   public getEventList(start: Date, end: Date, channels?: string[]): Observable<IEventModel[]> {
-    let url = `/api/v1/store/schedule/events?startTime=${start.toLocaleString()}&endTime=${end.toLocaleString()}`;
+    let url = `/api/v1/store/schedule/events?startTime=${start.toISOString()}&endTime=${end.toISOString()}`;
     console.log(url);
     if (channels && channels.length > 0) {
       channels.forEach(c => url = `${url}&channels=${c}`);
@@ -76,8 +76,11 @@ export class ScheduleService {
     return this.httpClient.post('/api/v1/store/schedule/events', event);
   }
 
-  editEvent(EventID: string, event: IAddEvent) {
-    return this.httpClient.post('/api/v1/store/schedule/events/' + EventID, event);
+  editEvent(EventID: string, event: any) {
+    const headers = new HttpHeaders()
+    .set('content-type', 'application/merge-patch+json')
+    .set('responseType', 'json');
+    return this.httpClient.patch('/api/v1/store/schedule/events/' + EventID, event, {'headers': headers});
   }
 
   deleteEvent(EventID: string) {

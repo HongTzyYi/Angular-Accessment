@@ -9,10 +9,19 @@ import { IEventModel } from '../event/events-model';
 })
 export class DialogBodyComponent {
 
-  title = `Add new event`;
-  source = {channel: '', recordId: ''};
+  title: string;
+  type: string;
+  eventModel = <IEventModel>{};
 
-  constructor(public dialogRef: MatDialogRef<DialogBodyComponent>, @Inject(MAT_DIALOG_DATA) public eventModel: IEventModel) { }
+  constructor(public dialogRef: MatDialogRef<DialogBodyComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+    this.title = this.data.title;
+    this.type = this.data.type;
+    if (this.data.eventModel) {
+      this.eventModel = this.data.eventModel;
+      this.eventModel.start = new Date(this.data.eventModel['start:dateTime']);
+      this.eventModel.end = new Date(this.data.eventModel['end:dateTime']);
+    }
+  }
 
   close() {
     this.dialogRef.close();

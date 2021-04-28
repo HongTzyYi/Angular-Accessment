@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { IEventModel } from './events-model';
+import { IEventModel, IEditEvent } from './events-model';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 import { DialogBodyComponent } from '../dialog-body/dialog-body.component';
 import { ScheduleService } from '../service/schedule.service';
 import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'events-thumbnail',
@@ -16,6 +17,7 @@ import { Observable, of } from 'rxjs';
 
 export class EventsThumbnailComponent {
     @Input() event: IEventModel;
+    editEvent = <IEditEvent>{};
 
     constructor(private scheduleService: ScheduleService, private matDialog: MatDialog) {}
 
@@ -30,14 +32,20 @@ export class EventsThumbnailComponent {
     openDialog() {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.width = `500px`;
-        dialogConfig.data = {eventModel: this.event};
+        dialogConfig.data = {eventModel: this.event, title: 'Edit Event', type: 'EDIT'};
         const dialogRef =  this.matDialog.open(DialogBodyComponent, dialogConfig);
 
-        dialogRef.afterClosed().subscribe(result => {
-            console.log(`event details dialog closed`);
-            console.log(result);
-            this.scheduleService.editEvent(this.event.event || '', this.scheduleService.processEventData(result))
-            .subscribe();
+        dialogRef.afterClosed().pipe(
+            map(result => {
+                console.log(result);
+                this.editEvent['start:dateTime'] =  new Date(result.start).toISOString();
+                this.editEvent['end:dateTime'] = new Date(result.end).toISOString(); })
+        )
+        .subscribe(result => {
+            if (this.editEvent) {
+                this.scheduleService.editEvent(this.event.event || '', this.editEvent)
+                .subscribe();
+            }
         });
     }
 
@@ -45,6 +53,6 @@ export class EventsThumbnailComponent {
         return (error: any): Observable<T> => {
           console.error(error);
           return of(result as T);
-        }
+        };
       }
 }

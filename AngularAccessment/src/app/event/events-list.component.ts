@@ -9,8 +9,8 @@ import { ScheduleService } from '../service/schedule.service';
 })
 
 export class EventsListComponent implements OnInit {
-    end = new Date();
-    start = new Date(this.end.getFullYear(), this.end.getMonth(), this.end.getDate(), 0, 0, 0, 0);
+    end = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 23, 59, 59, 99);
+    start = new Date(this.end.getFullYear(), this.end.getMonth(), this.end.getDate(), this.end.getHours() - 6, 0, 0, 0);
     events: IEventModel[];
     constructor(private eventService: ScheduleService) {}
 

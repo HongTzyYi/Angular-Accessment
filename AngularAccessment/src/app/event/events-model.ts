@@ -41,3 +41,8 @@ export interface IAddEvent {
     'customMetadata'?: {};
     'type:enum'?: EventType;
 }
+
+export interface IEditEvent {
+    'start:dateTime'?: string;
+    'end:dateTime'?: string;
+}

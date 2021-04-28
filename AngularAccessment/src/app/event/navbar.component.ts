@@ -45,14 +45,16 @@ export class NavBarComponent {
     openDialog() {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.width = `500px`;
-        dialogConfig.data = {eventModel: this.eventModel};
+        dialogConfig.data = {eventModel: this.eventModel, title: 'Add New Event', type: 'ADD'};
         const dialogRef =  this.matDialog.open(DialogBodyComponent, dialogConfig);
 
         dialogRef.afterClosed().subscribe(result => {
             console.log(`event details dialog closed`);
             console.log(result);
-            this.scheduleService.createEvent(this.scheduleService.processEventData(result))
-            .subscribe( complete => window.location.reload());
+            if (result) {
+                this.scheduleService.createEvent(this.scheduleService.processEventData(result))
+            .subscribe();
+            }
         });
     }
 
