@@ -1,9 +1,9 @@
 // Service containing API wrapper from scs schedule API
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { IEventModel, EventStatus, EventType, IAddEvent, IEditEvent } from '../event/events-model';
+import { IEventModel, EventStatus, EventType, IAddEvent } from '../event/events-model';
 import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { EventsListComponent } from '../event/events-index';
 
 @Injectable({
@@ -53,7 +53,6 @@ export class ScheduleService {
 
   public getEventList(start: Date, end: Date, channels?: string[]): Observable<IEventModel[]> {
     let url = `/api/v1/store/schedule/events?startTime=${start.toISOString()}&endTime=${end.toISOString()}`;
-    console.log(url);
     if (channels && channels.length > 0) {
       channels.forEach(c => url = `${url}&channels=${c}`);
     }

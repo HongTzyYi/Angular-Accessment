@@ -10,12 +10,10 @@ import { IEventModel } from '../event/events-model';
 export class DialogBodyComponent {
 
   title: string;
-  type: string;
   eventModel = <IEventModel>{};
 
   constructor(public dialogRef: MatDialogRef<DialogBodyComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
     this.title = this.data.title;
-    this.type = this.data.type;
     if (this.data.eventModel) {
       this.eventModel = this.data.eventModel;
       this.eventModel.start = new Date(this.data.eventModel['start:dateTime']);

@@ -17,12 +17,8 @@ import { map } from 'rxjs/operators';
 
 export class EventsThumbnailComponent {
     @Input() event: IEventModel;
-    
 
     constructor(private scheduleService: ScheduleService, private matDialog: MatDialog) {}
-
-    // placeholder function to API service
-    startRecord() {}
 
     deleteRecord() {
         this.scheduleService.deleteEvent(this.event.event || '')
@@ -47,15 +43,10 @@ export class EventsThumbnailComponent {
             console.log(editEvent);
             if (editEvent['start:dateTime'] && editEvent['end:dateTime']) {
                 this.scheduleService.editEvent(this.event.event || '', editEvent)
-                .subscribe();
+                .subscribe(next => {
+                    if (editEvent) { window.location.reload(); }
+                });
             }
         });
     }
-
-    private handleError<T>(operation = 'operation', result?: T) {
-        return (error: any): Observable<T> => {
-          console.error(error);
-          return of(result as T);
-        };
-      }
 }
