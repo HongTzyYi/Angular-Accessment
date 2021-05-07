@@ -33,7 +33,7 @@ export class EventsListComponent implements OnInit {
         const reloadInterval = interval(10000); // Reload event list every 10 sec
 
         this.search(this.start, this.end);
-        let subscription = reloadInterval.subscribe(val => this.search(this.start, this.end));
+        reloadInterval.subscribe(val => this.search(this.start, this.end));
     }
 
     openDialog() {
