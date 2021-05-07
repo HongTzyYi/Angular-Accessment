@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import {
   NavBarComponent,
   EventsListComponent,
-  EventsThumbnailComponent,
+  EventsDetailComponent,
   IEventModel
 } from './event/events-index';
 import { ScheduleService } from './service/schedule.service';
@@ -25,7 +25,7 @@ import { MatInputModule } from '@angular/material/input';
     AppComponent,
     NavBarComponent,
     EventsListComponent,
-    EventsThumbnailComponent,
+    EventsDetailComponent,
     DialogBodyComponent
   ],
   imports: [

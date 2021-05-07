@@ -14,7 +14,7 @@ export class DialogBodyComponent {
 
   constructor(public dialogRef: MatDialogRef<DialogBodyComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
     this.title = this.data.title;
-    if (this.data.eventModel) {
+    if (this.data.eventModel && this.data.eventModel['start:dateTime']) {
       this.eventModel = this.data.eventModel;
       this.eventModel.start = new Date(this.data.eventModel['start:dateTime']);
       this.eventModel.end = new Date(this.data.eventModel['end:dateTime']);

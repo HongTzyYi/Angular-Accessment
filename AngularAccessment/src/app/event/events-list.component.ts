@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { IEventModel, IEditEvent } from './events-model';
+import { IEventModel } from './events-model';
 import { ScheduleService } from '../service/schedule.service';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { DialogBodyComponent } from '../dialog-body/dialog-body.component';
-import { map } from 'rxjs/operators';
+import { concatMap, filter } from 'rxjs/operators';
+import { interval } from 'rxjs';
 
 
 @Component({
@@ -19,15 +20,20 @@ import { map } from 'rxjs/operators';
 
 export class EventsListComponent implements OnInit {
     end = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 23, 59, 59, 99);
-    start = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours() - 1);
+    start = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours());
     events: IEventModel[];
     event: IEventModel;
-    constructor(private scheduleService: ScheduleService, private matDialog: MatDialog) {}
+
+    constructor(private scheduleService: ScheduleService, private matDialog: MatDialog) {
+        this.events = <IEventModel[]>[];
+        this.event = <IEventModel>{};
+    }
 
     ngOnInit() {
-        this.scheduleService.getEventList(this.start, this.end).subscribe(events => {
-            this.events = events;
-        });
+        const reloadInterval = interval(10000); // Reload event list every 10 sec
+
+        this.search(this.start, this.end);
+        let subscription = reloadInterval.subscribe(val => this.search(this.start, this.end));
     }
 
     openDialog() {
@@ -36,16 +42,21 @@ export class EventsListComponent implements OnInit {
         dialogConfig.data = {eventModel: this.event, title: 'Add New Event'};
         const dialogRef =  this.matDialog.open(DialogBodyComponent, dialogConfig);
 
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.scheduleService.createEvent(this.scheduleService.processEventData(result))
-            .subscribe(
-                next => {
-                    if (next) { window.location.reload(); }
-                }
-            );
-            }
+        dialogRef.afterClosed().pipe(
+            filter(result => result),
+            concatMap( result => this.scheduleService.createEvent(this.scheduleService.processEventData(result)))
+        ).subscribe(next => {if (next) {this.search(this.start, this.end); }} );
+    }
+
+    search(start: Date, end: Date) {
+        this.start = start;
+        this.end = end;
+        this.scheduleService.getEventList(new Date(start), new Date(end)).subscribe(events => {
+            this.events = events;
         });
     }
 
+    reload(msg: any) {
+        this.search(this.start, this.end);
+    }
 }

@@ -1,13 +1,26 @@
 <div>
-    <h1>Available Events List
-        <button class="btn btn-default" id="addEvent" (click) = "openDialog()">
-            Add New Event
-        </button>
-    </h1>
+    <h1>Available Events List</h1>
     <hr/>
+    <div>
+        <form id="search">
+            <div class="form-group">
+                <input [(ngModel)]="start" name="start" type="datetime" placeholder="Start Date time" width="30%">
+                 to 
+                <input [(ngModel)]="end" name="end" type="datetime" placeholder="End Date time" width="30%">
+                &nbsp;
+                <button class="btn btn-default" (click)="search(start, end)">
+                    Search
+                </button>
+                &nbsp;
+                <button class="btn btn-default" id="addEvent" (click) = "openDialog()">
+                    Add New Event
+                </button>
+            </div>
+        </form>
+    </div>
     <div class="row">
         <div *ngFor="let event of events" class="col-md-5">
-            <events-thumbnail [event]="event"></events-thumbnail>
+            <events-detail [event]="event" (reloadEvent)="reload($event)"></events-detail>
         </div>
     </div>
 </div>

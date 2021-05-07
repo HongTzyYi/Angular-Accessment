@@ -1,8 +1,8 @@
 // Service containing API wrapper from scs schedule API
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { IEventModel, EventStatus, EventType, IAddEvent } from '../event/events-model';
-import { Observable, of } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { IEventModel, IAddEvent } from '../event/events-model';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { EventsListComponent } from '../event/events-index';
 
